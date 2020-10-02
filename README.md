@@ -63,12 +63,13 @@ I need a smaller ‘target’ colour palette to make the dithered image from
 
 ``` r
 # Number of colours wanted in smaller target palette
-target_palette_size <- 16
+target_palette_size <- 12
 
-set.seed(4)
+set.seed(5)
 reduced_palette <-
   colorfindr::get_colors('reduced_image.png') %>% 
   colorfindr::make_palette(target_palette_size)
+#> Warning: Quick-TRANSfer stage steps exceeded maximum (= 1170450)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -140,9 +141,10 @@ dither_mat <-
   rep_mat(nrow_out = imager::height(i2),
           ncol_out = imager::width(i2))
 
+# Append matrix to dataframe and subtract 0.5 from normalised matrix
 i2_df <-
   i2_df %>% 
-  mutate(dither_mat = as.vector(dither_mat))
+  mutate(dither_mat = as.vector(dither_mat)-0.5)
 ```
 
 ## Non-dithered
@@ -175,16 +177,12 @@ dataframe
 f <- 1/target_palette_size
 
 # Apply dither by adding the dither matrix (multiplied by f) to each RGB channel pixel
-# Then re-normalise each channel to be bewtween 0 and 1
 # Then run closest_colour() again
 i2_df <-
   i2_df %>% 
   mutate(r = r + (f*dither_mat),
-         r = (r - min(r))/(max(r) - min(r)),
          g = g + (f*dither_mat),
-         g = (g - min(g))/(max(g) - min(g)),
-         b = b + (f*dither_mat),
-         b = (b - min(b))/(max(b) - min(b))) %>% 
+         b = b + (f*dither_mat)) %>% 
   mutate(reduced_dithered = pmap_chr(list(r, g, b), closest_colour))
 ```
 
@@ -202,7 +200,8 @@ i2_df %>%
   scale_y_reverse()+
   scale_fill_identity()+
   facet_wrap(~k)+
-  labs(title = "Ordered dithering")
+  labs(title = "Ordered dithering",
+       subtitle = paste0("Image recreated with ", target_palette_size, " colour reduced palette"))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
