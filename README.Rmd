@@ -22,9 +22,9 @@ library(imager)
 ```
 
 ## Import image
-Read in image and visualise
+Read in image and visualise. I am using the **splash** image from [The USC-SIPI Image Database](http://sipi.usc.edu/database/)
 ```{r}
-img <- 'lenna.png'
+img <- 'splash.png'
 i <- imager::load.image(img)
 plot(i)
 ```
@@ -176,5 +176,5 @@ Zoom in
 ```{r fig.height=8, fig.width=8, message=FALSE}
 last_plot() +
   scale_x_continuous(limits = c(50, 100))+
-  scale_y_reverse(limits = c(120, 70))
+  scale_y_reverse(limits = c(95, 45))
 ```

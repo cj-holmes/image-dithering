@@ -22,10 +22,11 @@ library(imager)
 
 ## Import image
 
-Read in image and visualise
+Read in image and visualise. I am using the **splash** image from [The
+USC-SIPI Image Database](http://sipi.usc.edu/database/)
 
 ``` r
-img <- 'lenna.png'
+img <- 'splash.png'
 i <- imager::load.image(img)
 plot(i)
 ```
@@ -69,7 +70,6 @@ set.seed(5)
 reduced_palette <-
   colorfindr::get_colors('reduced_image.png') %>% 
   colorfindr::make_palette(target_palette_size)
-#> Warning: Quick-TRANSfer stage steps exceeded maximum (= 1170450)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -211,7 +211,7 @@ Zoom in
 ``` r
 last_plot() +
   scale_x_continuous(limits = c(50, 100))+
-  scale_y_reverse(limits = c(120, 70))
+  scale_y_reverse(limits = c(95, 45))
 #> Warning: Removed 84032 rows containing missing values (geom_raster).
 ```
 
